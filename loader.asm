@@ -29,6 +29,27 @@ LoadKernel:
     int 0x13
     jc  ReadError
 
+GetMemInfoStart:
+    mov eax,0xe820
+    mov edx,0x534d4150
+    mov ecx,20
+    mov edi,0x9000
+    xor ebx,ebx
+    int 0x15
+    jc NotSupport
+
+GetMemInfo:
+    add edi,20
+    mov eax,0xe820
+    mov edx,0x534d4150
+    mov ecx,20
+    int 0x15
+    jc GetMemDone
+
+    test ebx,ebx
+    jnz GetMemInfo
+
+GetMemDone:
     mov ah,0x13
     mov al,1
     mov bx,0xa
@@ -44,6 +65,6 @@ End:
     jmp End
 
 DriveId:    db 0
-Message:    db "kernel is loaded"
+Message:    db "Get memory info done"
 MessageLen: equ $-Message
 ReadPacket: times 16 db 0
