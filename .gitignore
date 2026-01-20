@@ -1,0 +1,12 @@
+# Compiled binaries
+*.bin
+*.o
+*.elf
+
+# Disk images
+*.img
+*.iso
+
+# Bochs logs and state
+bochsout.txt
+*.lock
