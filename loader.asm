@@ -29,6 +29,19 @@ LoadKernel:
     int 0x13
     jc  ReadError
 
+LoadUser:
+    mov si,ReadPacket
+    mov word[si],0x10
+    mov word[si+2],10
+    mov word[si+4],0
+    mov word[si+6],0x2000
+    mov dword[si+8],106
+    mov dword[si+0xc],0
+    mov dl,[DriveId]
+    mov ah,0x42
+    int 0x13
+    jc  ReadError
+
 GetMemInfoStart:
     mov eax,0xe820
     mov edx,0x534d4150
@@ -50,6 +63,7 @@ GetMemInfo:
     mov ecx,20
     int 0x15
     jnc GetMemInfo
+
 
 GetMemDone:
 TestA20:
@@ -104,9 +118,9 @@ PMEntry:
     mov dword[0x70000],0x71003
     mov dword[0x71000],10000011b
 
-    mov eax,(0xffff800000000000 >> 39)
+    mov eax,(0xffff800000000000>>39)
     and eax,0x1ff
-    mov dword[0x70000 + eax*8],0x72003
+    mov dword[0x70000+eax*8],0x72003
     mov dword[0x72000],10000011b
 
     lgdt [Gdt64Ptr]

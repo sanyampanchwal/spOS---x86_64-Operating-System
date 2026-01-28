@@ -21,10 +21,13 @@ global vector18
 global vector19
 global vector32
 global vector39
+global sysint
 global eoi
 global read_isr
 global load_idt
 global load_cr3
+global pstart
+global read_cr2
 
 Trap:
     push rax
@@ -161,6 +164,11 @@ vector39:
     push 39
     jmp Trap
 
+sysint:
+    push 0
+    push 0x80
+    jmp Trap
+
 eoi:
     mov al,0x20
     out 0x20,al
@@ -180,5 +188,13 @@ load_cr3:
     mov rax,rdi
     mov cr3,rax
     ret
+
+read_cr2:
+    mov rax,cr2
+    ret
+
+pstart:
+    mov rsp,rdi
+    jmp TrapReturn
 
 
