@@ -2,18 +2,21 @@
 nasm -f bin -o boot.bin boot.asm
 nasm -f bin -o loader.bin loader.asm
 nasm -f elf64 -o kernel.o kernel.asm
-nasm -f elf64 -o trapa.o trap.asm   # New: Assemble trap.asm to trapa.o
+nasm -f elf64 -o trapa.o trap.asm
+nasm -f elf64 -o liba.o lib.asm
 
 # 2. Compile C Files
-# We use x86_64-elf-gcc for your Mac
+# Added debug.c
 x86_64-elf-gcc -std=c99 -mcmodel=large -ffreestanding -fno-stack-protector -mno-red-zone -c main.c -o main.o
 x86_64-elf-gcc -std=c99 -mcmodel=large -ffreestanding -fno-stack-protector -mno-red-zone -c trap.c -o trap.o
+x86_64-elf-gcc -std=c99 -mcmodel=large -ffreestanding -fno-stack-protector -mno-red-zone -c print.c -o print.o
+x86_64-elf-gcc -std=c99 -mcmodel=large -ffreestanding -fno-stack-protector -mno-red-zone -c debug.c -o debug.o
 
 # 3. Link Everything
-# We link kernel.o, main.o, trapa.o (assembly traps), and trap.o (C handler)
-x86_64-elf-ld -nostdlib -T link.lds -o kernel kernel.o main.o trapa.o trap.o
+# Added debug.o to the end of the list
+x86_64-elf-ld -nostdlib -T link.lds -o kernel kernel.o main.o trapa.o trap.o liba.o print.o debug.o
 
-# 4. Extract Raw Binary
+# 4. Extract Binary
 x86_64-elf-objcopy -O binary kernel kernel.bin 
 
 # 5. Write to Disk Image
