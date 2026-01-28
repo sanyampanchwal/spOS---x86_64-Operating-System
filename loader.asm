@@ -103,6 +103,7 @@ PMEntry:
     mov dword[0x70000],0x71007
     mov dword[0x71000],10000111b
 
+
     lgdt [Gdt64Ptr]
 
     mov eax,cr4
