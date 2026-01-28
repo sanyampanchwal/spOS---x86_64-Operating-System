@@ -19,3 +19,5 @@ dd if=boot.bin of=boot.img bs=512 count=1 conv=notrunc
 dd if=loader.bin of=boot.img bs=512 count=5 seek=1 conv=notrunc
 dd if=kernel.bin of=boot.img bs=512 count=100 seek=6 conv=notrunc
 dd if=user.bin of=boot.img bs=512 count=10 seek=106 conv=notrunc,sync
+dd if=user1.bin of=boot.img bs=512 count=10 seek=106 conv=notrunc
+dd if=user2.bin of=boot.img bs=512 count=10 seek=116 conv=notrunc
