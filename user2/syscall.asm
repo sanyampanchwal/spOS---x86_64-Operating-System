@@ -3,6 +3,7 @@ global writeu
 global sleepu
 global exitu
 global waitu
+global keyboard_readu
 
 writeu:
     sub rsp,16
@@ -43,6 +44,14 @@ waitu:
     mov eax,3
     mov rdi,0
 
+    int 0x80
+
+    ret
+
+keyboard_readu:
+    mov eax,4
+    xor edi,edi
+    
     int 0x80
 
     ret
